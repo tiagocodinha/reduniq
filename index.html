@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Comprar Bilhete - Nalu Beach Club</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f2f2f2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .container {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    button {
+      background: #0c9;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Comprar Bilhete</h1>
+    <p>Reserva o teu lugar no Sunset do Nalu Beach Club</p>
+    <button onclick="pagar()">Pagar 15€</button>
+  </div>
+
+  <script>
+    async function pagar() {
+      const res = await fetch("https://nalu-backend.vercel.app/api/pagar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          descricao: "Bilhete Sunset",
+          valor: 1500
+        })
+      });
+
+      const data = await res.json();
+      if (data.redirect_url) {
+        window.location.href = data.redirect_url;
+      } else {
+        alert("Erro ao processar pagamento");
+        console.error(data);
+      }
+    }
+  </script>
+</body>
+</html>
